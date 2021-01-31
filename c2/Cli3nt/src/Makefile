@@ -11,7 +11,7 @@ module_init.o: module_init.c module_init.h
 
 .PHONY:
 	clean
-
+ 
 clean:
 	rm -f $(OBJECTS)
 
