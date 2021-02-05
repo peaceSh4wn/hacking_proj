@@ -11,6 +11,7 @@
 
 // get local ip automatically in next version
 #define LOCAL_IP "192.168.204.146"
+#define LOCAL_PORT 6666
 
 typedef enum {
 	FAILURE = -1,
@@ -22,10 +23,10 @@ typedef struct _sockTag {
 	struct sockaddr_in sk_addr;
 }SockTag;
 
-typdef struct _sockData {
+typedef struct _sockData {
 	char readData[DATA_LEN];
 	char sendData[DATA_LEN];
-	Sock_Tag sock_t;
+	SockTag sock_t;
 }SockData;
 
 /* global socket desciptor */
@@ -33,6 +34,18 @@ SockTag *Gst = NULL;
 
 /* global socket data */
 SockData *Gsd = NULL;
+
+#define GetSDfd(sd)\
+	sd->sock_t.sock_fd
+
+#define GetSDaddr(sd)\
+	sd->sock_t.sk_addr
+
+#define GetSDrdata(sd)\
+	sd->readData
+
+#define GetSDsdata(sd)\
+	sd->sendData
 
 /* initilize global socket and prepare 
  * tcp connection. we'll use multithreading
