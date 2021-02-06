@@ -12,11 +12,13 @@
 
 #define USAGE_STR \
 "\
-	usage:\n \
-		cli3nt -ip (your master's ip) -port (your master's port)\n\
+usage:\n \
+	cli3nt --addr ip:port(your master ip & port)\n\
 \n\
-		happy hacking\n\
+	happy hacking\n\
 "
+#define INPUT_LEN		1024
+#define GET_DATA_LEN	2048
 
 typedef enum {
 	FAILURE = -1,

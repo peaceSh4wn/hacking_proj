@@ -45,7 +45,7 @@ int socket_module_init(const char *ip, int port)
 
 	sock_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock_fd < 0) {
-		fprintf(stderr, "Get socket file descriptor failed\n");
+		fprintf(stderr, "[!] Get socket file descriptor failed\n");
 		exit(0);
 	}
 
@@ -57,10 +57,12 @@ int socket_module_init(const char *ip, int port)
 
 	if (0 > connect(sock_fd, 
 		(const struct sockaddr *)&server_addr, len)) {
-		fprintf(stderr, "Connect server failed\n");
+		fprintf(stderr, "[!] Connect server failed\n");
 		exit(0);
 	}
 	
+	printf("[+] Connect successfully\n > ");
+#if 0	
 	char cmd[1024] = {0};
 	printf(">Connect successfully\n>");
 	while(1) {
@@ -72,7 +74,8 @@ int socket_module_init(const char *ip, int port)
 	}
 	
 	close(sock_fd);
-	
+#endif
+
 	return SUCCESS;
 
 }
@@ -87,19 +90,19 @@ int module_init(const char *module_name, int *index, char **argv)
 		int port = -1;
 
 		if (FAILURE == get_ip(IpPort, &ip)) {
-			printf("Get ip failed\n");
+			printf("[!] Get ip failed\n");
 			free(ip);
 			exit(0);
 		}
 		
 		if (FAILURE == get_port(IpPort, &port)) {
-			printf("Get port failed\n");
+			printf("[!] Get port failed\n");
 			free(ip);
 			exit(0);
 		}
 		
 		socket_module_init(ip, port);
-		printf("Ip port is %s\n", IpPort);
+		// printf("[+] Ip port is %s\n", IpPort);
 		free(ip);
 
 	} else if (SUCCESS == strcmp(module_name, "--proxy")) {

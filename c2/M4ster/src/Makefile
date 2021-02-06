@@ -4,7 +4,7 @@ M4ster: $(OBJECTS)
 	gcc -g3 -o M4ster $(OBJECTS)
 
 master.o: master.c master.h usage.h
-	gcc -g3 -o master.o -c master.c
+	gcc -g3 -o master.o -c master.c 
 
 .PHONY:
 	clean

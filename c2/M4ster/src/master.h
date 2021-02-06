@@ -35,6 +35,12 @@ SockTag *Gst = NULL;
 /* global socket data */
 SockData *Gsd = NULL;
 
+/* global data file pointer */
+FILE *g_dfp = NULL;
+
+/* global task counter */
+int g_tcnt = 0;
+
 #define GetSDfd(sd)\
 	sd->sock_t.sock_fd
 
@@ -46,6 +52,14 @@ SockData *Gsd = NULL;
 
 #define GetSDsdata(sd)\
 	sd->sendData
+
+#define XFREE(fp)			\
+	do {					\
+		if (fp != NULL)	{	\
+			free(fp);		\
+			fp = NULL;		\
+		}					\
+	} while(0)
 
 /* initilize global socket and prepare 
  * tcp connection. we'll use multithreading
