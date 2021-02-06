@@ -1,5 +1,6 @@
 #include "client.h"
 #include "module_init.h"
+#include "cmd_color.h"
 
 void usage() {
 	printf(USAGE_STR);	
@@ -43,9 +44,11 @@ int do_it()
 		write(sock_fd, (char *)cmd, strlen(cmd));
 		
 		// read responses
+		PRINT_FONT_GRE
 		while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
 			printf("%s", res); 
 		}
+		PRINT_FONT_BLU
 		printf("\n> ");
 	}
 	

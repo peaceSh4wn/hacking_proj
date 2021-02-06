@@ -1,4 +1,5 @@
 #include "module_init.h"
+#include "cmd_color.h"
 
 int get_ip(const char *IpPort, char **dstIp)
 {

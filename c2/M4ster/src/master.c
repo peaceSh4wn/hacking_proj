@@ -80,7 +80,7 @@ void loop()
 		printf("[-] recv failed\n");
 		return;
 	}
-	printf("%s\n", GetSDrdata(Gsd));
+	printf("[>] %s\n", GetSDrdata(Gsd));
 	
 	printf("[+] Task [%d] started\n", ++g_tcnt);
 
