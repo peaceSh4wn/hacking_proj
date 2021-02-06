@@ -5,5 +5,4 @@ Cli3nt
 
 # ignore objects
 *.o
-*.gch
 
