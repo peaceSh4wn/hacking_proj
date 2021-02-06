@@ -1,0 +1,9 @@
+
+# ignore processes
+M4ster
+Cli3nt
+
+# ignore objects
+*.o
+*.gch
+
