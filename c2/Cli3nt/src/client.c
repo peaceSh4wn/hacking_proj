@@ -38,7 +38,13 @@ int do_it()
 			please input data less than %d\n", INPUT_LEN);
 			cmd[INPUT_LEN - 1] = '\0';
 		}
-		if (strncmp(cmd, "quit", 4) == 0) break;
+		
+		if (0 == strlen(cmd)) {
+			printf("Cli3nt> ");
+			setbuf(stdin, NULL);
+			continue;
+		}
+		if (0 == strncmp(cmd, "quit", 4)) break;
 		
 		// send commands
 		write(sock_fd, (char *)cmd, strlen(cmd));
@@ -46,11 +52,15 @@ int do_it()
 		// read responses
 		PRINT_FONT_GRE
 		while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
+			if (0 == strncmp(res, "0v3r7", 5)) break;
 			printf("%s", res); 
 		}
+		PRINT_CLEAR
 		PRINT_FONT_BLU
-		printf("\n> ");
+		printf("\nCli3nt> ");
+		memset(cmd, 0, sizeof(cmd));
 	}
+	PRINT_CLEAR
 	
 }
 

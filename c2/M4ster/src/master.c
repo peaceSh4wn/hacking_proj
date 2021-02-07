@@ -75,27 +75,32 @@ err:
 
 void loop()
 {
-	/* TODO: should be a real loop tomorrow */
-	if (FAILURE == recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
-		printf("[-] recv failed\n");
-		return;
-	}
-	printf("[>] %s\n", GetSDrdata(Gsd));
-	
-	printf("[+] Task [%d] started\n", ++g_tcnt);
+	while (FAILURE != recv(GetSDfd(Gsd), 
+		(void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
+		
+		printf("[>] \"%s\"\n", GetSDrdata(Gsd));
+		if (0 == strncmp(GetSDrdata(Gsd), "quit", 4)) {
+			printf("[-] Loop over\n");
+			break;
+		}
 
-	/* execute command */
-	g_dfp = popen(GetSDrdata(Gsd), "r");
+		printf("[+] Task [%d] started\n", ++g_tcnt);
 
-	/* read data and send it in loop until file end */
-	while(NULL != fgets(GetSDsdata(Gsd), DATA_LEN, g_dfp)) {
+		/* execute command */
+		g_dfp = popen(GetSDrdata(Gsd), "r");
+
+		/* read data and send it in loop until file end */
+		while(NULL != fgets(GetSDsdata(Gsd), DATA_LEN, g_dfp)) {
 			printf("[-] %s", GetSDsdata(Gsd));
 			send(GetSDfd(Gsd), GetSDsdata(Gsd), DATA_LEN, 0);
+		}
+
+		SendOverTag();
+		pclose(g_dfp);
+
+		printf("[+] Task [%d] finished\n\n", g_tcnt);
+		memset(GetSDrdata(Gsd), 0, DATA_LEN); 
 	}
-
-	pclose(g_dfp);
-
-	printf("[+] Task [%d] finished\n\n", g_tcnt);
 }
 
 int close_server()

@@ -53,6 +53,14 @@ int g_tcnt = 0;
 #define GetSDsdata(sd)\
 	sd->sendData
 
+#define SendOverTag()		\
+	do {					\
+		send(GetSDfd(Gsd),	\
+		"0v3r7",			\
+		strlen("0v3r7"),	\
+		0);					\
+	} while(0)
+
 #define XFREE(fp)			\
 	do {					\
 		if (fp != NULL)	{	\
