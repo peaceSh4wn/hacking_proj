@@ -8,15 +8,9 @@
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include "usage.h"
 
 
-#define USAGE_STR \
-"\
-usage:\n \
-	cli3nt --addr ip:port(your master ip & port)\n\
-\n\
-	happy hacking\n\
-"
 #define INPUT_LEN		1024
 #define GET_DATA_LEN	2048
 

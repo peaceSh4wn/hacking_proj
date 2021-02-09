@@ -107,14 +107,18 @@ int module_init(const char *module_name, int *index, char **argv)
 		free(ip);
 
 	} else if (SUCCESS == strcmp(module_name, "--proxy")) {
+			
 		
-
 	} else if (SUCCESS == strcmp(module_name, "--times")) {
 		
-
-	} else {
 		
+	} else if (SUCCESS == strcmp(module_name, "-p")) {
+		
+		
+	} else {
 
+		printf("");
+		return FAILURE;
 	}
 	
 	return SUCCESS;

@@ -14,6 +14,7 @@ typedef struct global_module_ {
 		int param_int;
 	};
 	int type;
+
 }Modules;
 
 /* */

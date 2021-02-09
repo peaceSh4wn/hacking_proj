@@ -18,9 +18,9 @@ int init_client(int argc, char **argv)
 {
 	int i;
 	for(i = 1; i < argc; i++) {
-		// printf("[-] %s\n", argv[i]);
+		printf("[-] %s\n", argv[i]);
 		
-		/* module initilize in */
+		/* initilize modules with opts */
 		module_init(argv[i], &i, argv);
 	}
 }
@@ -44,8 +44,12 @@ int do_it()
 			setbuf(stdin, NULL);
 			continue;
 		}
-		if (0 == strncmp(cmd, "quit", 4)) break;
-		
+
+		if (0 == strncmp(cmd, "quit", 4)) {
+			write(sock_fd, (char *)cmd, strlen(cmd));
+			break;
+		}
+
 		// send commands
 		write(sock_fd, (char *)cmd, strlen(cmd));
 		
@@ -78,12 +82,12 @@ int main(int argc, char **argv)
 	
 	// init client
 	init_client(argc, argv);
-
+	
 	// send commands and print responses
 	do_it();
-
+	
 	// close client
 	close_client();
-
+	
 	return 0;
 }

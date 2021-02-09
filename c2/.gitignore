@@ -1,8 +1,11 @@
 
-# ignore processes
-M4ster
-Cli3nt
+# ignored processes
+Cli3nt/src/Cli3nt
+M4ster/src/M4ster
 
-# ignore objects
+# ignored objects
 *.o
-
+*.sh
+*.out
+test.*
+x.*

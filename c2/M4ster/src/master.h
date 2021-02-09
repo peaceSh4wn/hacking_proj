@@ -1,3 +1,11 @@
+/**
+ *	This header file is regarded as a common header
+ *	which will be included by other files in module
+ *	directory. In this file, some global variables
+ *	will be decleared, and some macro func will be 
+ *	set.
+ */
+
 #ifndef _MASTER_H_
 #define _MASTER_H_
 
@@ -7,6 +15,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 
+/* lengths */
 #define DATA_LEN 2048
 
 // get local ip automatically in next version
@@ -41,6 +50,11 @@ FILE *g_dfp = NULL;
 /* global task counter */
 int g_tcnt = 0;
 
+/* Compile Opetimize */
+#define likely(expr) __builtin_expect(!!(expr), 1)
+#define unlikely(expr) __builtin_expect(!!(expr), 0)
+
+/* Data Getter */
 #define GetSDfd(sd)\
 	sd->sock_t.sock_fd
 
@@ -53,6 +67,7 @@ int g_tcnt = 0;
 #define GetSDsdata(sd)\
 	sd->sendData
 
+/* macro func */
 #define SendOverTag()		\
 	do {					\
 		send(GetSDfd(Gsd),	\

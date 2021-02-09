@@ -1,6 +1,9 @@
-#include "master.h"
-#include "usage.h"
 #include <stdlib.h>
+#include "master.h"
+#include "uitls/usage.h"
+#include "modules/module_register.h"
+
+extern STAT opt_parse();
 
 int main(int argc, char **argv)
 {
@@ -79,25 +82,16 @@ void loop()
 		(void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
 		
 		printf("[>] \"%s\"\n", GetSDrdata(Gsd));
+		
 		if (0 == strncmp(GetSDrdata(Gsd), "quit", 4)) {
-			printf("[-] Loop over\n");
 			break;
 		}
 
 		printf("[+] Task [%d] started\n", ++g_tcnt);
-
-		/* execute command */
-		g_dfp = popen(GetSDrdata(Gsd), "r");
-
-		/* read data and send it in loop until file end */
-		while(NULL != fgets(GetSDsdata(Gsd), DATA_LEN, g_dfp)) {
-			printf("[-] %s", GetSDsdata(Gsd));
-			send(GetSDfd(Gsd), GetSDsdata(Gsd), DATA_LEN, 0);
-		}
-
-		SendOverTag();
-		pclose(g_dfp);
-
+		
+		/* operation parse */
+		opt_parse();
+		
 		printf("[+] Task [%d] finished\n\n", g_tcnt);
 		memset(GetSDrdata(Gsd), 0, DATA_LEN); 
 	}
@@ -113,7 +107,7 @@ int close_server()
 	XFREE(Gsd);
 	g_dfp = NULL;
 
-	printf("[-] closed successfully\n");
+	printf("[-] closed M4ster successfully\n");
 
 	return SUCCESS;
 }
