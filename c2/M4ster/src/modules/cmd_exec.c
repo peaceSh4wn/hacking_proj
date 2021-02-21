@@ -3,11 +3,17 @@
 
 STAT cmd_exec() 
 {
+	/* global socket data in master.h */
+	SockData *Gsd;
 	if (unlikely(0 == strlen(GetSDrdata(Gsd)))) {
 		printf("can't get cmd\n");
 		goto err;
 	}
+	
 	/* execute command */
+
+	/* global data file descriptor in master.h */
+	FILE *g_dfp;
 	g_dfp = popen(GetSDrdata(Gsd), "r");
 
 	/* read data and send it in loop until file end */

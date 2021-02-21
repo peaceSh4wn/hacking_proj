@@ -39,16 +39,16 @@ typedef struct _sockData {
 }SockData;
 
 /* global socket desciptor */
-SockTag *Gst = NULL;
+extern SockTag *Gst;
 
 /* global socket data */
-SockData *Gsd = NULL;
+extern SockData *Gsd;
 
 /* global data file pointer */
-FILE *g_dfp = NULL;
+extern FILE *g_dfp;
 
 /* global task counter */
-int g_tcnt = 0;
+extern int g_tcnt;
 
 /* Compile Opetimize */
 #define likely(expr) __builtin_expect(!!(expr), 1)

@@ -6,6 +6,7 @@ M4ster/src/M4ster
 # ignored objects
 *.o
 *.sh
+*.so
 *.out
 test.*
 x.*

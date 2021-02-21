@@ -5,7 +5,7 @@ MODULE_OBJ=cmd_exec.o
 M4ster: $(OBJECTS) 	
 	gcc -g3 -o M4ster $(OBJECTS)
 
-master.o: master.c master.h usage.h module.o
+master.o: master.c master.h module.o
 	gcc -g3 -o master.o -c master.c module.o 
 
 modules.o: module_register.c module_register.h $(MODULE_OBJ)
