@@ -1,22 +1,19 @@
 OBJECTS=master.o 
 MODULE_DIR=./modules
-MODULE_OBJ=cmd_exec.o
+MODULE_OBJ=module_register.o cmd_exec.o
 
-M4ster: $(OBJECTS) 	
-	gcc -g3 -o M4ster $(OBJECTS)
+#M4ster: $(OBJECTS) 	
+#	gcc -g3 -o M4ster $(OBJECTS)
 
-master.o: master.c master.h module.o
-	gcc -g3 -o master.o -c master.c module.o 
+#master.o: master.c master.h 
+#	gcc -g3 -o master.o -c master.c -l
 
-modules.o: module_register.c module_register.h $(MODULE_OBJ)
-	gcc -g3 -o modules.o -c module_register.c $(MODULE_OBJ)
-
-cmd_exec.o:
-	gcc -g3 -o cmd_exec.o -c -I$(MODULE_DIR)/cmd_exec.h \
-							 -I$(MODULE_DIR)/cmd_exec.c
+M4ster: master.c master.h
+	gcc -Wall -g3 -o M4ster master.c -L/root/hacking_proj/c2/M4ster/src/modules -lmodule -Wl,-rpath=/root/hacking_proj/c2/M4ster/src/modules
 
 .PHONY:
 	clean
+	del
 
 clean:
 	rm -f $(OBJECTS)

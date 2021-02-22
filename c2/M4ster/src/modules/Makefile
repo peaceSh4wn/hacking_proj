@@ -13,4 +13,7 @@ cmd_exec.o: cmd_exec.c cmd_exec.h
 	clean
 
 clean:
-	rm -f *.o
+	-rm -f *.o
+
+del:
+	rm -f *.o *.so

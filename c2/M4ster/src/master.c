@@ -1,9 +1,14 @@
 #include <stdlib.h>
 #include "master.h"
-#include "uitls/usage.h"
+#include "utils/usage.h"
 #include "modules/module_register.h"
 
-extern STAT opt_parse();
+STAT opt_parse();
+
+SockTag *Gst = NULL;
+SockData *Gsd = NULL;
+FILE *g_dfp = NULL;
+int g_tcnt;
 
 int main(int argc, char **argv)
 {

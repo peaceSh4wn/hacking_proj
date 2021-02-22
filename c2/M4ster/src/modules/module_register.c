@@ -27,6 +27,6 @@ STAT module_close()
 
 STAT opt_parse()
 {
-	printf("okkkk");
+	printf("okkkk\n");
 	return SUCCESS;
 }
