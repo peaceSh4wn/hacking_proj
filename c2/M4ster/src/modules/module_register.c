@@ -25,8 +25,8 @@ STAT module_close()
 	return SUCCESS;
 }
 
-STAT opt_parse()
+STAT opt_parse(SockData *Gsd)
 {
-	printf("okkkk\n");
+	cmd_exec(Gsd);		
 	return SUCCESS;
 }

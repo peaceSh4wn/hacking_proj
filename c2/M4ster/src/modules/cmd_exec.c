@@ -1,10 +1,8 @@
 #include "../master.h"
 #include "cmd_exec.h"
 
-STAT cmd_exec() 
+STAT cmd_exec(SockData *Gsd) 
 {
-	/* global socket data in master.h */
-	SockData *Gsd;
 	if (unlikely(0 == strlen(GetSDrdata(Gsd)))) {
 		printf("can't get cmd\n");
 		goto err;

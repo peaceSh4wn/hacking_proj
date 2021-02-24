@@ -63,6 +63,7 @@ int socket_module_init(const char *ip, int port)
 	}
 	
 	printf("[+] Connect successfully\nCli3nt> ");
+
 #if 0	
 	char cmd[1024] = {0};
 	printf(">Connect successfully\n>");

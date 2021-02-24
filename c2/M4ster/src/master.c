@@ -3,7 +3,7 @@
 #include "utils/usage.h"
 #include "modules/module_register.h"
 
-STAT opt_parse();
+// STAT opt_parse();
 
 SockTag *Gst = NULL;
 SockData *Gsd = NULL;
@@ -32,6 +32,7 @@ err:
 
 int init_server()
 {
+	printf(usage);
 	Gst = (SockTag *)calloc(1, sizeof(SockTag));			
 	if (NULL == Gst) {
 		printf("[-] malloc to Gst failed\n");
@@ -74,7 +75,7 @@ int init_server()
 	// accept
 	GetSDfd(Gsd) = accept(Gst->sock_fd, 
 		(struct sockaddr *)&(GetSDaddr(Gsd)), &len);
-
+	
 	return SUCCESS;
 err:
 	XFREE(Gst);
@@ -95,7 +96,7 @@ void loop()
 		printf("[+] Task [%d] started\n", ++g_tcnt);
 		
 		/* operation parse */
-		opt_parse();
+		opt_parse(Gsd);
 		
 		printf("[+] Task [%d] finished\n\n", g_tcnt);
 		memset(GetSDrdata(Gsd), 0, DATA_LEN); 
