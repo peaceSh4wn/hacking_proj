@@ -19,6 +19,10 @@ typedef enum {
 	SUCCESS
 }RetVal;
 
+typedef struct _file {
+
+}file;
+
 /* global socket file descriptor */
 int sock_fd;
 

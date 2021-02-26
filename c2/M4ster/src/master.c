@@ -88,7 +88,7 @@ void loop()
 		(void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
 		
 		printf("[>] \"%s\"\n", GetSDrdata(Gsd));
-		
+
 		if (0 == strncmp(GetSDrdata(Gsd), "quit", 4)) {
 			break;
 		}
@@ -97,7 +97,7 @@ void loop()
 		
 		/* operation parse */
 		opt_parse(Gsd);
-		
+
 		printf("[+] Task [%d] finished\n\n", g_tcnt);
 		memset(GetSDrdata(Gsd), 0, DATA_LEN); 
 	}

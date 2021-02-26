@@ -19,7 +19,7 @@
 #define DATA_LEN 2048
 
 // get local ip automatically in next version
-#define LOCAL_IP "192.168.204.146"
+#define LOCAL_IP "192.168.204.150"
 #define LOCAL_PORT 6666
 
 typedef enum {

@@ -4,18 +4,19 @@
 #include "../master.h"
 
 #define FILE_OPT_LEN 20
+#define FILE_TRANS_LEN 4096
 
 typedef struct _FileOpt {
 	char opt[FILE_OPT_LEN];
-
 }FileOpt;
 
 typedef struct _FileInfo {
-	
+
 }FileInfo;
 
 typedef struct _File{
-	
+	FileOpt fopt;
+	FileInfo fif;
 }File;
 
 File *global_file;

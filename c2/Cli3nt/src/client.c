@@ -18,7 +18,7 @@ int init_client(int argc, char **argv)
 {
 	int i;
 	for(i = 1; i < argc; i++) {
-		printf("[-] %s\n", argv[i]);
+		//printf("[-] %s\n", argv[i]);
 		
 		/* initilize modules with opts */
 		module_init(argv[i], &i, argv);
@@ -45,6 +45,30 @@ int do_it()
 			continue;
 		}
 
+		if (0 == strncmp(cmd, "get", 3)) {
+			write(sock_fd, (char *)cmd, strlen(cmd));
+			read(sock_fd, (char *)res, GET_DATA_LEN);
+			printf("%s\n", res);
+
+			FILE *lfp = NULL;
+			char rfile[INPUT_LEN] = {0};
+			char lfile[INPUT_LEN] = {0};
+			printf("(file) ");
+			scanf("%[^\n]%*c", rfile);
+			printf("(local) ");
+			scanf("%[^\n]%*c", lfile);
+			
+			/* Send file name and get result, if result is fail, 
+			 * then print err info. If result is success, then we 
+			 * will start trasfer file.*/
+			
+			write(sock_fd, (char *)rfile, strlen(rfile));
+			read(sock_fd, (char *)res, GET_DATA_LEN);
+			printf("res is %s\n", res);
+			printf("Cli3nt> ");
+			continue;
+		}
+
 		if (0 == strncmp(cmd, "quit", 4)) {
 			write(sock_fd, (char *)cmd, strlen(cmd));
 			break;
@@ -54,13 +78,13 @@ int do_it()
 		write(sock_fd, (char *)cmd, strlen(cmd));
 		
 		// read responses
-		PRINT_FONT_GRE
+		PRINT_FONT_YEL
 		while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
 			if (0 == strncmp(res, "0v3r7", 5)) break;
 			printf("%s", res); 
 		}
 		PRINT_CLEAR
-		PRINT_FONT_BLU
+		PRINT_FONT_PUR
 		printf("\nCli3nt> ");
 		memset(cmd, 0, sizeof(cmd));
 	}
