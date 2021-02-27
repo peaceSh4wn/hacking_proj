@@ -48,6 +48,8 @@ int do_it()
 		if (0 == strncmp(cmd, "get", 3)) {
 			write(sock_fd, (char *)cmd, strlen(cmd));
 			read(sock_fd, (char *)res, GET_DATA_LEN);
+			
+			// resGet
 			printf("%s\n", res);
 
 			FILE *lfp = NULL;
@@ -64,7 +66,97 @@ int do_it()
 			
 			write(sock_fd, (char *)rfile, strlen(rfile));
 			read(sock_fd, (char *)res, GET_DATA_LEN);
+			
+			// okk
 			printf("res is %s\n", res);
+
+			if (0 != strncmp(res, "okk", 3)) {
+				printf("err occured\n");
+				goto next;
+			}
+			
+			write(sock_fd, "fine", strlen("fine"));
+			lfp = fopen(lfile, "w+");
+			
+			/* get file */
+			while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
+				if (0 == strncmp(res, "0v3r7", 5)) break;
+				fputs(res, lfp);
+			}
+
+			fclose(lfp);
+			lfp = NULL;
+			PRINT_FONT_GRE
+			printf("[+] file trans done\n");
+			PRINT_CLEAR
+next:
+			PRINT_FONT_PUR
+			printf("Cli3nt> ");
+			continue;
+		}
+
+		if (0 == strncmp(cmd, "put", 3)) {
+			write(sock_fd, cmd, strlen(cmd));
+			read(sock_fd, res, GET_DATA_LEN);
+#if 1
+			printf("%s\n", res);
+#endif
+			FILE *lfp = NULL;
+			char rfile[INPUT_LEN] = {0};
+			char lfile[INPUT_LEN] = {0};
+			char sendBuf[GET_DATA_LEN] = {0};
+
+			printf("(file) ");
+			scanf("%[^\n]%*c", lfile);
+			printf("(remote) ");
+			scanf("%[^\n]%*c", rfile);
+			
+			if (0 != access(lfile, F_OK)) {
+				printf("no such file or lack of priviledge\n");
+				write(sock_fd, "err", strlen("err"));
+				goto next1;
+			}
+				
+			write(sock_fd, rfile, strlen(rfile));
+			read(sock_fd, (char *)res, GET_DATA_LEN);
+
+			lfp = fopen(lfile, "rb");
+			
+			if (0 != strncmp(res, "okk", 3)) {
+				printf("%s\n", res);
+				write(sock_fd, "err", strlen("err"));
+				goto next1;
+			}
+			
+			if (NULL == lfp) {
+				printf("can't open local file\n");
+				write(sock_fd, "err", strlen("err"));
+				goto next1;
+			}
+
+			write(sock_fd, "action", 6);
+			read(sock_fd, (char *)res, GET_DATA_LEN);
+
+			if (0 == strncmp(res, "okk", 3)) {
+				while(NULL != fgets(sendBuf, GET_DATA_LEN, lfp)) {
+					printf("send %d\n", strlen(sendBuf));
+					write(sock_fd, sendBuf, strlen(sendBuf));
+					memset(sendBuf, 0, GET_DATA_LEN);
+				}
+				printf("send tag\n");
+				sleep(1);
+				SendOverTag();
+				printf("send tag over\n");
+			} else {
+				printf("some err occured\n");
+				SendOverTag();
+			}
+next1:	
+			if (NULL != lfp) {
+				fclose(lfp);
+				lfp = NULL;
+			}
+			PRINT_FONT_PUR
 			printf("Cli3nt> ");
 			continue;
 		}

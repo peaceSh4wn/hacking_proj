@@ -67,6 +67,8 @@ int g_tcnt;
 #define GetSDsdata(sd)\
 	sd->sendData
 
+#define OVER_TAG "0v3r7"
+
 /* macro func */
 #define SendOverTag()		\
 	do {					\

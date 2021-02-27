@@ -28,8 +28,8 @@ STAT module_close()
 
 STAT opt_parse(SockData *Gsd)
 {
-	/* file transfer */
 	if (0 == strncmp(GetSDrdata(Gsd), "get", 3)) {
+		/* get file */
 		FILE *fp = NULL;
 		send(GetSDfd(Gsd), "revGet", 20, 0);
 		recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0);
@@ -42,7 +42,8 @@ STAT opt_parse(SockData *Gsd)
 			goto err;
 		}
 		
-		fp = fopen(GetSDrdata(Gsd), "w+");
+		// file name
+		fp = fopen(GetSDrdata(Gsd), "r+");
 		if (NULL == fp) {
 			goto err;
 		}
@@ -58,10 +59,58 @@ STAT opt_parse(SockData *Gsd)
 			SendOverTag();
 			fclose(fp);
 		} else {
+			
 			fclose(fp);
 		}
 
+	} else if (0 == strncmp(GetSDrdata(Gsd), "put", 3)) {
+		/* put file */
+		FILE *fp = NULL;
+		send(GetSDfd(Gsd), "revPut", 30, 0); 
+		recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0);
+		
+		if (0 == strncmp(GetSDrdata(Gsd), "err", 3)) {
+#if 1
+			printf("err occured\n");
+#endif
+			goto err;	
+		}
+		
+		fp = fopen(GetSDrdata(Gsd), "wb+");
+		if (NULL == fp) {
+			send(GetSDfd(Gsd), "err", 30, 0);
+			goto err;
+		}
+		
+		send(GetSDfd(Gsd), "okk", 30, 0);
+		recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0);
+
+		if (0 == strncmp(GetSDrdata(Gsd), "err", 3)) {
+#if 1
+			printf("err occured\n");
+#endif
+			goto err;
+		}
+		
+		if (0 != strncmp(GetSDrdata(Gsd), "action", 6)) {
+			goto err;
+		}
+		send(GetSDfd(Gsd), "okk", 30, 0);
+
+		printf("%s %d\n", OVER_TAG, strlen(OVER_TAG));
+		while (FAILURE != recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
+			printf("%s\n", GetSDrdata(Gsd));
+
+			if (0 == strncmp(GetSDrdata(Gsd), OVER_TAG, 5)) {
+				break;
+				
+			}
+			fputs(GetSDrdata(Gsd), fp);
+		}
+		fclose(fp);
+		fp = NULL;
 	} else {
+		/* command execute */
 		cmd_exec(Gsd);	
 	}
 	return SUCCESS;

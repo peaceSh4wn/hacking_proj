@@ -23,6 +23,13 @@ typedef struct _file {
 
 }file;
 
+#define SendOverTag()       \
+    do {                    \
+        write(sock_fd,  	\
+        "0v3r7",            \
+        strlen("0v3r7"));   \
+    } while(0)
+
 /* global socket file descriptor */
 int sock_fd;
 
