@@ -33,8 +33,8 @@ typedef struct _sockTag {
 }SockTag;
 
 typedef struct _sockData {
-	char readData[DATA_LEN];
-	char sendData[DATA_LEN];
+	unsigned char readData[DATA_LEN];
+	unsigned char sendData[DATA_LEN];
 	SockTag sock_t;
 }SockData;
 

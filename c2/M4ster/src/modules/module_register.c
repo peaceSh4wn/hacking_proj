@@ -43,7 +43,7 @@ STAT opt_parse(SockData *Gsd)
 		}
 		
 		// file name
-		fp = fopen(GetSDrdata(Gsd), "r+");
+		fp = fopen(GetSDrdata(Gsd), "rb");
 		if (NULL == fp) {
 			goto err;
 		}
@@ -59,7 +59,6 @@ STAT opt_parse(SockData *Gsd)
 			SendOverTag();
 			fclose(fp);
 		} else {
-			
 			fclose(fp);
 		}
 
@@ -97,15 +96,24 @@ STAT opt_parse(SockData *Gsd)
 		}
 		send(GetSDfd(Gsd), "okk", 30, 0);
 
-		printf("%s %d\n", OVER_TAG, strlen(OVER_TAG));
-		while (FAILURE != recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
-			printf("%s\n", GetSDrdata(Gsd));
-
+		// printf("%s %d\n", OVER_TAG, strlen(OVER_TAG));
+		int fp_block_sz = 0;
+		while (fp_block_sz = recv(GetSDfd(Gsd), (void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
+			// printf("%s\n", GetSDrdata(Gsd));
+			if (0 > fp_block_sz) {
+				printf("[!] Error receiving file from client to server\n");
+			}
 			if (0 == strncmp(GetSDrdata(Gsd), OVER_TAG, 5)) {
 				break;
-				
 			}
 			fputs(GetSDrdata(Gsd), fp);
+			int write_sz = fwrite(GetSDrdata(Gsd), sizeof(unsigned char), fp_block_sz, fp);
+			if (write_sz < fp_block_sz) {
+				printf("[!] error File write failed on server\n");
+			} else if (-1 == fp_block_sz) {
+				break;
+			}
+			bzero(GetSDrdata(Gsd), DATA_LEN);
 		}
 		fclose(fp);
 		fp = NULL;
@@ -113,6 +121,7 @@ STAT opt_parse(SockData *Gsd)
 		/* command execute */
 		cmd_exec(Gsd);	
 	}
+
 	return SUCCESS;
 err:
 	return FAILURE;

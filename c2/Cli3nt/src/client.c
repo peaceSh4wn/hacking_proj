@@ -50,11 +50,11 @@ int do_it()
 			read(sock_fd, (char *)res, GET_DATA_LEN);
 			
 			// resGet
-			printf("%s\n", res);
+			// printf("%s\n", res);
 
 			FILE *lfp = NULL;
-			char rfile[INPUT_LEN] = {0};
-			char lfile[INPUT_LEN] = {0};
+			unsigned char rfile[INPUT_LEN] = {0};
+			unsigned char lfile[INPUT_LEN] = {0};
 			printf("(file) ");
 			scanf("%[^\n]%*c", rfile);
 			printf("(local) ");
@@ -68,7 +68,7 @@ int do_it()
 			read(sock_fd, (char *)res, GET_DATA_LEN);
 			
 			// okk
-			printf("res is %s\n", res);
+			// printf("res is %s\n", res);
 
 			if (0 != strncmp(res, "okk", 3)) {
 				printf("err occured\n");
@@ -76,7 +76,7 @@ int do_it()
 			}
 			
 			write(sock_fd, "fine", strlen("fine"));
-			lfp = fopen(lfile, "w+");
+			lfp = fopen(lfile, "wb+");
 			
 			/* get file */
 			while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
@@ -98,13 +98,13 @@ next:
 		if (0 == strncmp(cmd, "put", 3)) {
 			write(sock_fd, cmd, strlen(cmd));
 			read(sock_fd, res, GET_DATA_LEN);
-#if 1
+#if 0 
 			printf("%s\n", res);
 #endif
 			FILE *lfp = NULL;
-			char rfile[INPUT_LEN] = {0};
-			char lfile[INPUT_LEN] = {0};
-			char sendBuf[GET_DATA_LEN] = {0};
+			unsigned char rfile[INPUT_LEN] = {0};
+			unsigned char lfile[INPUT_LEN] = {0};
+			unsigned char sendBuf[GET_DATA_LEN] = {0};
 
 			printf("(file) ");
 			scanf("%[^\n]%*c", lfile);
@@ -123,7 +123,7 @@ next:
 			lfp = fopen(lfile, "rb");
 			
 			if (0 != strncmp(res, "okk", 3)) {
-				printf("%s\n", res);
+				// printf("%s\n", res);
 				write(sock_fd, "err", strlen("err"));
 				goto next1;
 			}
@@ -138,15 +138,16 @@ next:
 			read(sock_fd, (char *)res, GET_DATA_LEN);
 
 			if (0 == strncmp(res, "okk", 3)) {
-				while(NULL != fgets(sendBuf, GET_DATA_LEN, lfp)) {
-					printf("send %d\n", strlen(sendBuf));
-					write(sock_fd, sendBuf, strlen(sendBuf));
-					memset(sendBuf, 0, GET_DATA_LEN);
+				int fp_block_sz = 0;
+				while(0 < (fp_block_sz = fread(sendBuf, sizeof(char), GET_DATA_LEN, lfp))) {
+					//printf("send %d\n", strlen(sendBuf));
+					write(sock_fd, sendBuf, fp_block_sz);
+					bzero(sendBuf, GET_DATA_LEN);
 				}
-				printf("send tag\n");
+				//printf("send tag\n");
 				sleep(1);
 				SendOverTag();
-				printf("send tag over\n");
+				//printf("send tag over\n");
 			} else {
 				printf("some err occured\n");
 				SendOverTag();
