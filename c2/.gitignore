@@ -8,7 +8,5 @@ M4ster/src/M4ster
 *.sh
 *.so
 *.out
-test.*
 x.*
-test
 .vscode
