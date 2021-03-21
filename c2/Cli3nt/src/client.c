@@ -77,11 +77,20 @@ int do_it()
 			
 			write(sock_fd, "fine", strlen("fine"));
 			lfp = fopen(lfile, "wb+");
-			
+		
+			int rf_sz = 0;	
 			/* get file */
-			while (read(sock_fd, (char *)res, GET_DATA_LEN)) {
+			while (0 < (rf_sz = read(sock_fd, (char *)res, GET_DATA_LEN))) {
 				if (0 == strncmp(res, "0v3r7", 5)) break;
 				fputs(res, lfp);
+				int write_sz = fwrite(res, sizeof(char), rf_sz, lfp);
+				if (write_sz < rf_sz) {
+					printf("File write failed\n");
+					break;
+				} else if (rf_sz == -1) {
+					printf("Finished\n");
+					break;
+				}
 			}
 
 			fclose(lfp);

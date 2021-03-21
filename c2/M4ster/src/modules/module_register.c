@@ -1,6 +1,7 @@
 #include "module_register.h"
 #include "cmd_exec.h"
 #include <unistd.h>
+#include <stdlib.h>
 
 STAT module_ini()
 {
@@ -53,9 +54,15 @@ STAT opt_parse(SockData *Gsd)
 		
 		if (0 == strncmp(GetSDrdata(Gsd), "fine", 4)) {
 			/* start transfering file */
-			while(NULL != fgets(GetSDsdata(Gsd), DATA_LEN, fp)) {
-				send(GetSDfd(Gsd), GetSDsdata(Gsd), DATA_LEN, 0);
+			int rf_sz = 0;
+			while(0 < (rf_sz = fread(GetSDsdata(Gsd), sizeof(char), DATA_LEN, fp))) {
+				if (0 > send(GetSDfd(Gsd), GetSDsdata(Gsd), rf_sz, 0)) {
+					printf("[!] err: failed to send file\n");
+					exit(0);
+				}
+				bzero(GetSDsdata(Gsd), DATA_LEN);
 			}
+			sleep(1);
 			SendOverTag();
 			fclose(fp);
 		} else {

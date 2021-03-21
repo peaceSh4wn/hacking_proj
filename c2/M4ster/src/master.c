@@ -50,7 +50,8 @@ int init_server()
 	memset(&(Gst->sk_addr), 0, sizeof(struct sockaddr_in));
 	Gst->sk_addr.sin_family = AF_INET;
 	Gst->sk_addr.sin_port = htons(LOCAL_PORT);
-	Gst->sk_addr.sin_addr.s_addr = inet_addr(LOCAL_IP);
+	Gst->sk_addr.sin_addr.s_addr = INADDR_ANY;
+	//inet_addr(LOCAL_IP);
 
 	// bind with ip port
 	if (FAILURE == bind(Gst->sock_fd, 

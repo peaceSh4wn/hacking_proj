@@ -16,6 +16,7 @@ M4ster: master.c master.h
 	del
 
 clean:
+	make del
 	rm -f $(OBJECTS)
 
 del:
