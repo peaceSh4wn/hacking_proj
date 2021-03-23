@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
 	bzero((void *)&src_adr, sizeof(src_adr));
 
 	/* 为了方便观看，这没有做容错处理 */
-    /* 填充sockaddr_in结构体，即：设置协议、ip、端口 */
+  /* 填充sockaddr_in结构体，即：设置协议、ip、端口 */
 	src_adr.sin_family = AF_INET;
-	src_adr.sin_port = htonl(atoi(argv[2]));
+	src_adr.sin_port = htons(atoi(argv[2])); // 这里注意端口是short int，如果误用htonl，则可能被转换为网络序时连不上
 	src_adr.sin_addr.s_addr = inet_addr(argv[1]);
 
     /* 发送请求，尝试建立连接*/
