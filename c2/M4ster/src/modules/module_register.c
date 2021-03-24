@@ -27,6 +27,68 @@ STAT module_close()
 	return SUCCESS;
 }
 
+/* Active Mode C->S */
+SockTag* GetFileATag() {
+	SockTag *st = NULL;
+	st = (SockTag *)malloc(sizeof(SockTag));
+
+	if (st == NULL)
+		goto err;
+	
+	if ((st->sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+		goto err;
+	}
+	
+	bzero((void *)&(st->sk_addr), sizeof(struct sockaddr_in));
+	st->sk_addr.sin_family = AF_INET;
+	st->sk_addr.sin_port = htons(4779);
+	st->sk_addr.sin_addr.s_addr = INADDR_ANY;
+
+	return st;
+err:
+	if (st) {
+		free(st);
+		st = NULL;
+	}
+	return NULL;
+}
+
+/* Passive Mode S->C */
+SockTag* GetFilePTag(cosnt char *ip, const short port) {
+	SockTag *st = NULL;
+	st = (SockTag *)malloc(sizeof(SockTag));
+
+	if (st == NULL)
+		goto err;
+	
+	if ((st->sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+		goto err;
+	}
+	
+	bzero((void *)&(st->sk_addr), sizeof(struct sockaddr_in));
+	st->sk_addr.sin_family = AF_INET;
+	st->sk_addr.sin_port = htons(port);
+	st->sk_addr.sin_addr.s_addr = inet_addr(ip);
+
+	return st;
+err:
+	if (st) {
+		free(st);
+		st = NULL;
+	}
+	return NULL;
+}
+
+STAT DelFileTag(SockTag *st) {
+	if (st == NULL)
+		goto err;
+	free(st);
+	st = NULL;
+	return SUCCESS;
+err:
+	return FAILURE;
+}
+
 STAT opt_parse(SockData *Gsd)
 {
 	if (0 == strncmp(GetSDrdata(Gsd), "get", 3)) {
