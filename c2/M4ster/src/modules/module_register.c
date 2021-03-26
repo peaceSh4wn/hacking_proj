@@ -34,11 +34,11 @@ SockTag* GetFileATag() {
 
 	if (st == NULL)
 		goto err;
-	
+
 	if ((st->sock_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		goto err;
 	}
-	
+
 	bzero((void *)&(st->sk_addr), sizeof(struct sockaddr_in));
 	st->sk_addr.sin_family = AF_INET;
 	st->sk_addr.sin_port = htons(4779);
@@ -54,7 +54,7 @@ err:
 }
 
 /* Passive Mode S->C */
-SockTag* GetFilePTag(cosnt char *ip, const short port) {
+SockTag* GetFilePTag(const char *ip, const short port) {
 	SockTag *st = NULL;
 	st = (SockTag *)malloc(sizeof(SockTag));
 
@@ -186,6 +186,26 @@ STAT opt_parse(SockData *Gsd)
 		}
 		fclose(fp);
 		fp = NULL;
+	} else if (0 == strncmp(GetSDrdata(Gsd), "sock", 4)) {
+		char ip[20] = "192.168.204.1";
+		SockTag *st = GetFilePTag(ip, 4558);
+		if (NULL == st) {
+			send(GetSDfd(Gsd), "[-] get socket data File tag failed\n", 50, 0);
+			goto err;
+		}
+
+		if (0 > connect(Getfd(st), (struct sockaddr *)&(Getadr(st)), sizeof(struct sockaddr))) {
+			send(GetSDfd(Gsd), "[-] connect failed\n", 30, 0);
+			goto err;
+		}
+		char buffer[100] = "hello shawn! This is a msg for you\n";
+		write(Getfd(st), buffer, strlen(buffer));
+		memset(buffer, 0, sizeof(buffer));
+		close(Getfd(st));
+		free(st);
+		send(GetSDfd(Gsd), "Send msg successfully\n", 40, 0);
+		sleep(1);
+		SendOverTag();
 	} else {
 		/* command execute */
 		cmd_exec(Gsd);	

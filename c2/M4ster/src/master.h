@@ -54,7 +54,14 @@ int g_tcnt;
 #define likely(expr) __builtin_expect(!!(expr), 1)
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
 
-/* Data Getter */
+/* Data Getter in SockTag*/
+#define Getfd(st)\
+	st->sock_fd\
+
+#define Getadr(st)\
+	st->sk_addr
+
+/* Data Getter in SockData*/
 #define GetSDfd(sd)\
 	sd->sock_t.sock_fd
 
