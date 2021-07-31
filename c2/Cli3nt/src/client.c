@@ -25,6 +25,10 @@ int init_client(int argc, char **argv)
 	}
 }
 
+static void buffer_clear(char *cmd) {
+	memset(cmd, 0, strlen(cmd));
+}
+
 int do_it()
 {
 	
@@ -188,10 +192,13 @@ next1:
 		PRINT_CLEAR
 		PRINT_FONT_PUR
 		printf("\nCli3nt> ");
-		memset(cmd, 0, sizeof(cmd));
+//		memset(cmd, 0, sizeof(cmd));
+		buffer_clear(cmd);
+		buffer_clear(res);
 	}
 	PRINT_CLEAR
-	
+
+
 }
 
 int close_client()

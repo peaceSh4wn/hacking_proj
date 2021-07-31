@@ -27,6 +27,11 @@ STAT module_close()
 	return SUCCESS;
 }
 
+static void buffer_clear() {
+	memset(GetSDrdata(Gsd), 0, DATA_LEN);
+	memset(GetSDsdata(Gsd), 0, DATA_LEN);
+}
+
 /* Active Mode C->S */
 SockTag* GetFileATag() {
 	SockTag *st = NULL;
@@ -87,6 +92,10 @@ STAT DelFileTag(SockTag *st) {
 	return SUCCESS;
 err:
 	return FAILURE;
+}
+
+static void GetSenseChar() {
+	
 }
 
 STAT opt_parse(SockData *Gsd)
@@ -206,10 +215,22 @@ STAT opt_parse(SockData *Gsd)
 		send(GetSDfd(Gsd), "Send msg successfully\n", 40, 0);
 		sleep(1);
 		SendOverTag();
+	} else if (0 == strncmp(GetSDrdata(Gsd), "show file mode", strlen("show file mode"))) {
+		printf("okk");
+		if (1 == Gsd->file_mode)
+			send(GetSDfd(Gsd), "active", 6, 0);
+		else if(0 == Gsd->file_mode) 
+			send(GetSDfd(Gsd), "passive", 7, 0);
+		sleep(1);
+		SendOverTag();
+	} else if (0 == strncmp(GetSDrdata(Gsd), "set file mode", strlen("set file mode"))) {
+				
 	} else {
 		/* command execute */
 		cmd_exec(Gsd);	
 	}
+
+	buffer_clear();
 
 	return SUCCESS;
 err:

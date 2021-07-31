@@ -36,6 +36,9 @@ typedef struct _sockData {
 	unsigned char readData[DATA_LEN];
 	unsigned char sendData[DATA_LEN];
 	SockTag sock_t;
+	int rlen;
+	int wlen;
+	char file_mode;
 }SockData;
 
 /* global socket desciptor */
