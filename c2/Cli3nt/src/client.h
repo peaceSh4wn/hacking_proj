@@ -1,34 +1,13 @@
 #ifndef _CLIENT_H_
 #define _CLIENT_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/types.h>
-#include <unistd.h>
+#include "common_header.h"
 #include "usage.h"
-
-
-#define INPUT_LEN		1024
-#define GET_DATA_LEN	2048
-
-typedef enum {
-	FAILURE = -1,
-	SUCCESS
-}RetVal;
 
 typedef struct _file {
 
 }file;
 
-#define SendOverTag()       \
-    do {                    \
-        write(sock_fd,  	\
-        "0v3r7",            \
-        strlen("0v3r7"));   \
-    } while(0)
 
 /* global socket file descriptor */
 int sock_fd;

@@ -87,19 +87,34 @@ void loop()
 {
 	while (FAILURE != recv(GetSDfd(Gsd), 
 		(void *)&(GetSDrdata(Gsd)), DATA_LEN, 0)) {
-		
+
+#ifdef DEBUG
 		printf("[>] \"%s\"\n", GetSDrdata(Gsd));
+#endif
 
 		if (0 == strncmp(GetSDrdata(Gsd), "quit", 4)) {
+#if 0
+			//printf("[!] ok cli3nt stop sending data\n");
+			memset(GetSDrdata(Gsd), 0, DATA_LEN); 
+			continue;
+#endif
+			break;
+		} else if(0 == strncmp(GetSDrdata(Gsd), "bye", 3)) {
 			break;
 		}
 
+#ifdef DEBUG
 		printf("[+] Task [%d] started\n", ++g_tcnt);
-		
+#endif
+
 		/* operation parse */
 		opt_parse(Gsd);
 
+
+#ifdef DEBUG
 		printf("[+] Task [%d] finished\n\n", g_tcnt);
+#endif
+
 		memset(GetSDrdata(Gsd), 0, DATA_LEN); 
 	}
 }

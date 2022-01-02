@@ -117,8 +117,7 @@ int module_init(const char *module_name, int *index, char **argv)
 		
 		
 	} else {
-
-		printf("");
+		//printf(USAGE_STR);
 		return FAILURE;
 	}
 	
