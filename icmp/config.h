@@ -27,6 +27,6 @@ int rawsock, icmpcode;
 
 void *Malloc(int);
 struct hostent *GetHostByName(char *host);
-int get_raw_sock(void);
+int GetRawSock(void);
 int Select(int max, fd_set *fds);
 struct hostent *temp;
