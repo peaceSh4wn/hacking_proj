@@ -16,12 +16,12 @@
 #define CLISEQ 14
 
 #define VERSION "1"
-#define CHARS 256
-#define PING
-#define PONG 
+#define CHAR 256
+#define PING "ping"
+#define PONG "pong"
 
 struct sockaddr_in saddr;
-struct ip *ip
+struct ip *ip;
 struct icmp *icmp;
 int rawsock, icmpcode;
 

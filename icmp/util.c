@@ -42,11 +42,12 @@ int Select(int max, fd_set *fds) {
 
 void *Malloc(int size) {
 	void *buff;
-	buf = malloc(size);
+	buff = malloc(size);
 
 	if (!buff) {
 		perror("malloc");
 		exit(0);
 	}
-
+	
+	return buff;
 }
