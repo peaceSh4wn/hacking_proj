@@ -2,17 +2,17 @@
 
 struct hostent* GetHostByName(char *host) {
 	
-	struct hostent *temp;
+	struct hostent *tmp;
 
-	temp = Malloc(sizeof(struct hostent));
-	temp = gethostbyname(host);
+	tmp = Malloc(sizeof(struct hostent));
+	tmp = gethostbyname(host);
 
-	if (!temp) {
+	if (!tmp) {
 		perror("hostname");
 		exit(0);
 	}
 
-	return temp;
+	return tmp;
 }
 
 int GetRawSock(void) {

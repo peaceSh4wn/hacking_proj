@@ -2,6 +2,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <arpa/inet.h>
 #include <netinet/in_systm.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
@@ -25,9 +26,9 @@ struct sockaddr_in saddr;
 struct ip *ip;
 struct icmp *icmp;
 int rawsock, icmpcode;
+struct hostent *temp;
 
 void *Malloc(int);
 struct hostent *GetHostByName(char *host);
 int GetRawSock(void);
 int Select(int max, fd_set *fds);
-struct hostent *temp;
