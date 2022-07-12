@@ -16,24 +16,29 @@ unsigned long *find_st(void) {
 
 static int __init start(void) {
 	printk(KERN_ALERT "[+] module inserted\n");
-
+#if 1
 	st = find_st();
 	if (NULL != st) {
 		printk(KERN_ALERT "we find it %p\n", st);
-
-		unsigned long *sys_r = (unsigned long *)st[__NR_read];
+#if 1
+		sys_r = (unsigned long *)st[__NR_read];
 		printk(KERN_ALERT "sys_read %p\n", sys_r);
 
-		unsigned long *sys_w = (unsigned long *)st[__NR_write];
+		sys_w = (unsigned long *)st[__NR_write];
 		printk(KERN_ALERT "sys_write %p\n", sys_w);
-
+		
+		hook_start(sys_r, n_sys_r);
+#endif
 	}
-
+#endif
 	return 0;
 }
 
 static void __exit end(void) {
-	printk(KERN_ALERT "[-] bye~\n");	
+#if 1
+	hook_end(sys_r);
+#endif
+	printk(KERN_ALERT "[-] bye~\n");
 }
 
 module_init(start);
