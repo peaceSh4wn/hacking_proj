@@ -6,7 +6,9 @@ struct sym_hook {
 	unsigned char o[T_SIZE];
 	unsigned char n[T_SIZE];
 	struct list_head list;
-}
+};
+
+LIST_HEAD(hook_syms);
 
 unsigned long disable_wp(void) {
 
@@ -25,7 +27,7 @@ void restore_wp(unsigned long o_cr0) {
 	write_cr0(o_cr0);
 
 	barrier();
-	preempt_disable();
+	preempt_enable();
 }
 
 void hook_start(void *tg, void *new) {
@@ -76,6 +78,8 @@ void hook_end(void *tg) {
 void hook_pause(void *tg) {
 	struct sym_hook *s;
 
+	ALERT("pause hook %p\n", tg);
+
 	list_for_each_entry (s, &hook_syms, list) {
 		if (tg == s->addr) {
 			unsigned long o_cr0 = disable_wp();
@@ -89,6 +93,7 @@ void hook_pause(void *tg) {
 void hook_resume(void *tg) {
 	struct sym_hook *s;
 
+	ALERT("resume hook %p\n", tg);
     list_for_each_entry (s, &hook_syms, list) {
         if (tg == s->addr) {
             unsigned long o_cr0 = disable_wp();

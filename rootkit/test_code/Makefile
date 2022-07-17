@@ -1,5 +1,5 @@
 obj-m := ps.o
-ps-objs := hello.o util.o
+ps-objs := main.o util.o hook_fn.o
 
 KDIR=/lib/modules/$(shell uname -r)/build
 PWD=$(shell pwd)

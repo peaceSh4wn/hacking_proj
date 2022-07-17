@@ -21,13 +21,7 @@ static int __init start(void) {
 	if (NULL != st) {
 		printk(KERN_ALERT "we find it %p\n", st);
 #if 1
-		sys_r = (unsigned long *)st[__NR_read];
-		printk(KERN_ALERT "sys_read %p\n", sys_r);
-
-		sys_w = (unsigned long *)st[__NR_write];
-		printk(KERN_ALERT "sys_write %p\n", sys_w);
-		
-		hook_start(sys_r, n_sys_r);
+		hookrw_start();
 #endif
 	}
 #endif
@@ -36,7 +30,7 @@ static int __init start(void) {
 
 static void __exit end(void) {
 #if 1
-	hook_end(sys_r);
+	hookrw_end();	
 #endif
 	printk(KERN_ALERT "[-] bye~\n");
 }
